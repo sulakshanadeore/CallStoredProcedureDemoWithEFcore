@@ -1,0 +1,6 @@
+@CallStoredProcedureDemo_HostAddress = http://localhost:5164
+
+GET {{CallStoredProcedureDemo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
