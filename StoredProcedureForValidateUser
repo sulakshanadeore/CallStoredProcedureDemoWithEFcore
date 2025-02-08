@@ -1,0 +1,22 @@
+alter procedure sp_ValidateUser
+(@p_userid varchar(20),
+@p_password varchar(20),
+@p_status bit output)
+as
+begin
+declare
+@uid varchar(20),
+@pwd varchar(20)
+begin
+select @uid=userid,@pwd=password from  users
+where userid=@p_userid;
+if(@pwd=@p_password)
+begin
+set @p_status=1
+end
+else
+begin
+set @p_status=0
+end
+end
+end
