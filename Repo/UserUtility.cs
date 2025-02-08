@@ -8,7 +8,11 @@ namespace CallStoredProcedureDemo.Repo
   public  interface IUserService
     {
 
-        bool CheckForValidUser(string username, string password);       
+        bool CheckForValidUser(string username, string password); 
+        
+         void SignUp(string username, string password);
+
+        bool ChangePassword(int id, string newpass);
 
     }
     public class UserUtility : IUserService
@@ -19,6 +23,32 @@ namespace CallStoredProcedureDemo.Repo
         {
             _context = context; 
         }
+
+        public bool ChangePassword(int id, string newpass)
+        {
+            bool status = false;
+            try
+            {
+
+            
+            _context.Database.ExecuteSqlRaw("exec sp_updateUser @p_id, @p_newpassword",
+                new[]
+                {
+                  new SqlParameter("@p_id",id),
+                  new SqlParameter("@p_newpassword",newpass)
+                 
+                });
+                status = true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return status;
+
+        }
+
         public bool CheckForValidUser(string username, string password)
         {
             SqlParameter p_output=new SqlParameter("@p_status", System.Data.SqlDbType.Bit);
@@ -43,6 +73,16 @@ namespace CallStoredProcedureDemo.Repo
 
             return output;  
 
+        }
+
+        public void SignUp(string username, string password)
+        {
+            User user=new User();
+            user.id = 1;
+            user.Userid = username;
+            user.Password = password;
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
     }
 }

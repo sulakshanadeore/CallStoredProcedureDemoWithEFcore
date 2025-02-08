@@ -27,6 +27,8 @@ public partial class IndigoAirlinesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+
         modelBuilder.Entity<Customer>(entity =>
         {
             entity.HasKey(e => e.Custid).HasName("PK__Customer__049D3E813062DF8A");
@@ -67,7 +69,11 @@ public partial class IndigoAirlinesContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasNoKey();
+            entity.HasKey(e => e.id).HasName("PK__Users__3213E83FEFFD4931");
+
+            entity.ToTable("Users");
+
+            entity.Property(e => e.id).UseIdentityColumn();
 
             entity.Property(e => e.Password)
                 .HasMaxLength(20)
