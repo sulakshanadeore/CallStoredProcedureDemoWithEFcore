@@ -33,11 +33,37 @@ namespace CallStoredProcedureDemo.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public bool Post([FromBody] User user)
+        public IActionResult  Post([FromBody] User user)
         {
             bool ans=_service.CheckForValidUser(user.Userid, user.Password);
 
-            return ans;
+            if (ans)
+            {
+                return Ok("Success....");
+
+
+                // return Content("Login Successful....");//Content Result
+
+
+                //HttpResponseMessage
+                //var msg = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+                //msg.Content = new StringContent("Login Successful");
+                //return msg;
+
+
+
+            }
+            else
+            {
+
+                return BadRequest("Not allowed in.....");
+                //  return Content("Login UnSuccessful...."); //Content Result
+
+                //HttpResponseMessage
+                //var msg = new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest);
+                //msg.Content = new StringContent("Login UnSuccessful");
+                //return msg;
+            }
 
         }
 

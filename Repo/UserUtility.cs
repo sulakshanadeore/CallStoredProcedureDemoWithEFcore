@@ -23,28 +23,24 @@ namespace CallStoredProcedureDemo.Repo
         {
             SqlParameter p_output=new SqlParameter("@p_status", System.Data.SqlDbType.Bit);
             p_output.Direction = System.Data.ParameterDirection.Output;
-            var isValid = p_output;
+            //var isValid = p_output;
 
             //SqlParameter p1= new SqlParameter("@p_userid", username);
 
             //  throw new NotImplementedException();
-            var ans = _context.Database.ExecuteSqlRaw("Exec sp_ValidateUser @p_userid, @p_password, @p_status output",
+             _context.Database.ExecuteSqlRaw("Execute sp_ValidateUser @p_userid, @p_password, @p_status output",
                 new[]
                 {
                   new SqlParameter("@p_userid",username),
                   new SqlParameter("@p_password",password),
-                  isValid
+                  p_output
                 });
-            bool output;
-            if (ans==0)
-            {
-                output = false;
-            }
-            else
-            {
-                output=true;
-            }
-            
+
+           bool output=Convert.ToBoolean(p_output.Value); ;
+
+         //  return Convert.ToBoolean(p_output.Value)
+
+
             return output;  
 
         }
